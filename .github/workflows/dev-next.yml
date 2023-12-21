@@ -25,12 +25,12 @@ jobs:
 
       - name: Check the latest verion
         run: |
-          [ -e README.md ] && NOW=$(awk '/^ - ### **dev-next**:/{print $NF}' README.md)
+          [ -e README.md ] && NOW=$(awk '/^ - ### \*\*dev-next\*\*:/{print $NF}' README.md)
           LATEST=$(wget -qO- "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F '["]' '/tag_name.*-/{print $4;exit}')
           echo " NOW: $NOW"
           echo " LATEST: $LATEST"
           if [ "$NOW" != "$LATEST" ]; then
-            sed -i "/^ - ### **dev-next**:/s/\(.*: \).*/\1$LATEST/" README.md
+            sed -i "/^ - ### \*\*dev-next\*\*:/s/\(.*: \).*/\1$LATEST/" README.md
             echo "VERSION=$LATEST" >> $GITHUB_ENV
           fi
 

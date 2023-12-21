@@ -1,5 +1,5 @@
 # Sing-Box 镜像构建
-- **使用GitHub Actions自动更新**
+- **使用GitHub Actions每小时自动检测更新**
 
 ## 当前镜像版本：
 latest: v1.7.5

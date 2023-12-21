@@ -1,9 +1,9 @@
-name: "2. Build dev images"
+name: "2. Build dev-next images"
 
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["1. Build main images"]
+    workflows: ["1. Build latest images"]
     branches: [main]
     types:
       - completed
@@ -25,12 +25,12 @@ jobs:
 
       - name: Check the latest verion
         run: |
-          [ -e README.md ] && NOW=$(awk '/^dev:/{print $NF}' README.md)
+          [ -e README.md ] && NOW=$(awk '/^ - ### **dev-next**:/{print $NF}' README.md)
           LATEST=$(wget -qO- "https://api.github.com/repos/SagerNet/sing-box/releases" | awk -F '["]' '/tag_name.*-/{print $4;exit}')
           echo " NOW: $NOW"
           echo " LATEST: $LATEST"
           if [ "$NOW" != "$LATEST" ]; then
-            sed -i "/^dev:/s/\(.*: \).*/\1$LATEST/" README.md
+            sed -i "/^ - ### **dev-next**:/s/\(.*: \).*/\1$LATEST/" README.md
             echo "VERSION=$LATEST" >> $GITHUB_ENV
           fi
 

@@ -25,14 +25,9 @@ jobs:
 
       - name: Check the latest verion
         run: |
-          [ -e README.md ] && NOW=$(awk '/^ - ### \*\*latest\*\*:/{print $NF}' README.md)
-          LATEST=$(wget -qO- "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F '"' '/tag_name/{print $4}')
-          echo " NOW: $NOW"
+          [ -e README.md ] && LATEST=$(awk '/^ - ### \*\*latest\*\*:/{print $NF}' README.md)
           echo " LATEST: $LATEST"
-          if [ "$NOW" != "$LATEST" ]; then
-            sed -i "/^ - ### \*\*latest\*\*:/s/\(.*: \).*/\1$LATEST/" README.md
-            echo "VERSION=$LATEST" >> $GITHUB_ENV
-          fi
+          echo "VERSION=$LATEST" >> $GITHUB_ENV
 
       - name: Set up QEMU
         if: ${{ env.VERSION != '' }}

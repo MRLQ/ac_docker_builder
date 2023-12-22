@@ -15,7 +15,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:$LATEST
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:$VERSION
 
     steps:
       - name: Checkout code
@@ -51,7 +51,7 @@ jobs:
           push: true
           file: main/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/arm/v7
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}
+          tags: ${{ env.DOCKERHUB_REPOSITORY }} 
 
       - name: Upload to repository
         if: ${{ env.VERSION != '' }}

@@ -23,11 +23,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read version from README.md
+      - name: Check the latest verion
         run: |
-          [ -e README.md ] && VERSION=$(awk '/^ - ### \*\*latest\*\*:/{print $NF}' README.md)
-          echo "VERSION: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          [ -e README.md ] && NOW=$(awk '/^ - ### \*\*latest\*\*:/{print $NF}' README.md)
+          LATEST=$(wget -qO- "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F '"' '/tag_name/{print $4}')
+          echo " NOW: $NOW"
+          echo " LATEST: $LATEST"
+          if [ "$NOW" != "$LATEST" ]; then
+            sed -i "/^ - ### \*\*latest\*\*:/s/\(.*: \).*/\1$LATEST/" README.md
+            echo "VERSION=$LATEST" >> $GITHUB_ENV
+          fi
 
       - name: Set up QEMU
         if: ${{ env.VERSION != '' }}
@@ -51,7 +56,7 @@ jobs:
           push: true
           file: main/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/arm/v7
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:$VERSION
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}-${{ env.VERSION }}
 
       - name: Upload to repository
         if: ${{ env.VERSION != '' }}

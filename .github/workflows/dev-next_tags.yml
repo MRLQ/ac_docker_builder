@@ -15,7 +15,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:${{ env.VERSION }}
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:$VERSION
 
     steps:
       - name: Checkout code
@@ -23,11 +23,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read version from README.md
+      - name: Check the dev-next verion
         run: |
-          [ -e README.md ] && VERSION=$(awk '/^ - ### \*\*dev-next\*\*:/{print $NF}' README.md)
-          echo "VERSION: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          [ -e README.md ] && LATEST=$(awk '/^ - ### \*\*dev-next\*\*:/{print $NF}' README.md)
+          echo " LATEST: $LATEST"
+          echo "VERSION=$LATEST" >> $GITHUB_ENV
 
       - name: Set up QEMU
         if: ${{ env.VERSION != '' }}
@@ -51,7 +51,7 @@ jobs:
           push: true
           file: dev-next/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/arm/v7
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION }}
 
       - name: Upload to repository
         if: ${{ env.VERSION != '' }}

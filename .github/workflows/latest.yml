@@ -24,11 +24,9 @@ jobs:
         run: |
           [ -e README.md ] && NOW=$(awk '/^ - ### \*\*latest\*\*:/{print $NF}' README.md)
           LATEST=$(wget -qO- "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | awk -F '"' '/tag_name/{print $4}')
-          echo " NOW: $NOW"
-          echo " LATEST: $LATEST"
           if [ "$NOW" != "$LATEST" ]; then
             sed -i "/^ - ### \*\*latest\*\*:/s/\(.*: \).*/\1$LATEST/" README.md
-            sed -i "s/git clone -b [^[:space:]]* --single-branch/git clone -b $VERSION --single-branch/g" main/Dockerfile
+            sed -i "s/git clone -b [^[:space:]]* --single-branch/git clone -b $LATEST --single-branch/g" main/Dockerfile
             echo "VERSION=$LATEST" >> $GITHUB_ENV
           fi
 

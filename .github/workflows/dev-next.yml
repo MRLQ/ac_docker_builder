@@ -31,6 +31,7 @@ jobs:
           echo " LATEST: $LATEST"
           if [ "$NOW" != "$LATEST" ]; then
             sed -i "/^ - ### \*\*dev-next\*\*:/s/\(.*: \).*/\1$LATEST/" README.md
+            sed -i "s/git clone -b [^[:space:]]* --single-branch/git clone -b $VERSION --single-branch/g" dev-next/Dockerfile
             echo "VERSION=$LATEST" >> $GITHUB_ENV
           fi
 

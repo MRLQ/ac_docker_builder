@@ -3,7 +3,7 @@
 
 ## 当前镜像版本：
  - ### **latest**: v1.7.7
- - ### **dev-next**: v1.8.0-rc.9
+ - ### **dev-next**: v1.8.0-rc.10
 
 ## 特别感谢  
   - [fscarmen2](https://github.com/fscarmen2/docker_builder)

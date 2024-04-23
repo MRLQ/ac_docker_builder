@@ -7,7 +7,7 @@ on:
 
 jobs:
   Building:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: "Build image"
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
